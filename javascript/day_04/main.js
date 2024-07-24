@@ -94,7 +94,8 @@ const renderUsers = (users) => {
 };
 
 inputEl.addEventListener("keydown", (e) => {
-    if(e.key === "Enter") {
+    console.log(e);
+    if (e.key === "Enter") {
         // Lấy keyword từ input
         const keyword = e.target.value;
 
@@ -111,3 +112,22 @@ btnShowAll.addEventListener("click", () => {
 });
 
 renderUsers(users);
+
+// Scroll back to top
+const btnTop = document.getElementById("back-to-top");
+window.addEventListener("scroll", () => {
+    if (document.documentElement.scrollTop > 300) {
+        // Hiển thị nút back to top
+        btnTop.classList.remove("hide");
+    } else {
+        // Ẩn nút back to top
+        btnTop.classList.add("hide");
+    }
+});
+
+btnTop.addEventListener("click", () => {
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+});
