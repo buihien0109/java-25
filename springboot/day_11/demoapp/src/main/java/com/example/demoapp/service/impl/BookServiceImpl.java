@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -39,5 +40,17 @@ public class BookServiceImpl implements BookService {
             }
         }
         return result;
+    }
+
+    @Override
+    public List<Book> sortBooksByYearDesc() {
+        List<Book> books = bookDAO.findAll();
+        books.sort(new Comparator<Book>() {
+            @Override
+            public int compare(Book o1, Book o2) {
+                return o2.getYear() - o1.getYear();
+            }
+        });
+        return books;
     }
 }

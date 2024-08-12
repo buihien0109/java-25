@@ -44,20 +44,14 @@ public class BookController {
         return new ResponseEntity<>(book, HttpStatus.OK);
     }
 
-    //
-//    // 1. Viết API sắp xếp book theo năm giảm dần
-//    // http://localhost:8080/books/sortByYear
-//    @GetMapping("/sortByYear")
-//    public ResponseEntity<List<Book>> sortByYear() {
-//        books.sort(new Comparator<Book>() {
-//            @Override
-//            public int compare(Book o1, Book o2) {
-//                return o2.getYear() - o1.getYear();
-//            }
-//        });
-//        return ResponseEntity.ok(books);
-//    }
-//
+    // 1. Viết API sắp xếp book theo năm giảm dần
+    // http://localhost:8080/books/sortByYear
+    @GetMapping("/sortByYear")
+    public ResponseEntity<List<Book>> sortByYear() {
+        List<Book> result = bookService.sortBooksByYearDesc();
+        return ResponseEntity.ok(result);
+    }
+
     // 2. Tìm kiem sach theo ten (trong ten chua tu khoa bat ky)
     // http://localhost:8080/books/searchByTitle/{keyword}
     @GetMapping("/searchByTitle/{keyword}")

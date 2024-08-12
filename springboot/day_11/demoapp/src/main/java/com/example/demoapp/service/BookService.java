@@ -12,4 +12,6 @@ public interface BookService {
     List<Book> findBooksByTitle(String keyword);
 
     List<Book> findBooksBeetweenYears(int startYear, int endYear);
+
+    List<Book> sortBooksByYearDesc();
 }
