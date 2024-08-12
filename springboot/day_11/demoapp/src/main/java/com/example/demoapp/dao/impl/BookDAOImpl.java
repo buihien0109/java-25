@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public class BookDAOImpl implements BookDAO {
     @Override
-    public List<Book> findAll() {
+    public List<Book> findAll() { // select * from books
         return BookDB.books;
     }
 

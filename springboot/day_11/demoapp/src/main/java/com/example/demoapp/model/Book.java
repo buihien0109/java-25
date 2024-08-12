@@ -1,5 +1,6 @@
 package com.example.demoapp.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
