@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 /*
@@ -29,12 +27,13 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
-//    // GET: http://localhost:8080/books
-//    @GetMapping
-//    public ResponseEntity<List<Book>> getAllBooks() {
-//        return new ResponseEntity<>(books, HttpStatus.CREATED);
-//    }
-//
+    // GET: http://localhost:8080/books
+    @GetMapping
+    public ResponseEntity<List<Book>> getAllBooks() {
+        List<Book> books = bookService.getAllBooks();
+        return new ResponseEntity<>(books, HttpStatus.CREATED);
+    }
+
     // GET: http://localhost:8080/books/1
     @GetMapping("/{id}")
     public ResponseEntity<Book> getBookById(@PathVariable int id) {
@@ -44,7 +43,8 @@ public class BookController {
         }
         return new ResponseEntity<>(book, HttpStatus.OK);
     }
-//
+
+    //
 //    // 1. Viết API sắp xếp book theo năm giảm dần
 //    // http://localhost:8080/books/sortByYear
 //    @GetMapping("/sortByYear")
@@ -65,17 +65,12 @@ public class BookController {
         List<Book> result = bookService.findBooksByTitle(keyword);
         return ResponseEntity.ok(result);
     }
-//
-//    // 3. Tim kiem sach duoc xuat ban trong khoang thoi gian (fromYear, toYear)
-//    // http://localhost:8080/books/searchByYear/fromYear/{fromYear}/toYear/{toYear}
-//    @GetMapping("/searchByYear/fromYear/{fromYear}/toYear/{toYear}")
-//    public ResponseEntity<List<Book>> findBookInRangeYear(@PathVariable int fromYear, @PathVariable int toYear) {
-//        List<Book> result = new ArrayList<>();
-//        for (Book book : books) {
-//            if (book.getYear() >= fromYear && book.getYear() <= toYear) {
-//                result.add(book);
-//            }
-//        }
-//        return ResponseEntity.ok(result);
-//    }
+
+    // 3. Tim kiem sach duoc xuat ban trong khoang thoi gian (fromYear, toYear)
+    // http://localhost:8080/books/searchByYear/fromYear/{fromYear}/toYear/{toYear}
+    @GetMapping("/searchByYear/fromYear/{fromYear}/toYear/{toYear}")
+    public ResponseEntity<List<Book>> findBookInRangeYear(@PathVariable int fromYear, @PathVariable int toYear) {
+        List<Book> result = bookService.findBooksBeetweenYears(fromYear, toYear);
+        return ResponseEntity.ok(result);
+    }
 }

@@ -11,6 +11,11 @@ import java.util.List;
 @Repository
 public class BookDAOImpl implements BookDAO {
     @Override
+    public List<Book> findAll() {
+        return BookDB.books;
+    }
+
+    @Override
     public Book findById(int id) {
         for (Book book : BookDB.books) { // select * from books where id = ?
             if (book.getId() == id) {
