@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<h1>Home page 123 456</h1>
+
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores consequuntur cum, ducimus earum minus molestiae
+    natus repellat reprehenderit tempora totam!</p>
+
+<p>Hello</p>
+
+<p th:text="${book.title}"></p>
+<p th:text="${book.author}"></p>
+<p th:text="${book.year}"></p>
+<p th:text="${book.id}"></p>
+
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>
