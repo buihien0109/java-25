@@ -2,28 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Trang chu</title>
+    <title>Book Shop</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-<h1>Home page</h1>
-
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores consequuntur cum, ducimus earum minus molestiae
-    natus repellat reprehenderit tempora totam!</p>
-
-<p th:text="${book.getTitle()}"></p>
-<p th:text="${book.author}"></p>
-<p th:text="${book.year}"></p>
-<p th:text="${book.id}"></p>
-
 <h3>Danh sach book</h3>
-
-<form>
-    <input type="text" name="title" placeholder="Tim kiem theo ten">
-    <button type="submit">Tim kiem</button>
-</form>
-
-<br>
 
 <table border="1">
     <thead>
@@ -37,19 +20,31 @@
     </thead>
 
     <tbody>
-    <tr th:each="book : ${books}" th:styleappend="${book.id % 2 == 1 ? 'background-color: #cde2d4' : ''}">
+    <tr th:each="book : ${pageResponse.getContent()}" th:styleappend="${book.id % 2 == 1 ? 'background-color: #cde2d4' : ''}">
         <td th:text="${book.id}">1</td>
         <td th:text="${book.title}">Chao buoi sang</td>
         <td th:text="${book.author}">Nguyen Van A</td>
         <td th:text="${book.year}">2022</td>
         <td>
-<!--            <a th:href="@{/books/{id} (id=${book.id})}">Xem chi tiet</a>-->
-<!--            <a th:href="'/books/' + ${book.id}">Xem chi tiet</a>-->
             <a th:href="|/books/${book.id}|">Xem chi tiet</a>
         </td>
     </tr>
     </tbody>
 </table>
+
+<br>
+
+<button th:if="${pageResponse.getCurrentPage() != 1}">
+    <a th:href="|/books?page=${pageResponse.getCurrentPage() - 1}|">Trang truoc</a>
+</button>
+<button th:style="${pageResponse.getCurrentPage() == number ? 'background-color: red' : ''}"
+        th:each="number : ${#numbers.sequence(1, pageResponse.totalPages())}">
+    <a th:href="|/books?page=${number}|" th:text="${number}">1</a>
+</button>
+<button th:if="${pageResponse.getCurrentPage() != pageResponse.totalPages()}">
+    <a th:href="|/books?page=${pageResponse.getCurrentPage() + 1}|">Trang sau</a>
+</button>
+
 
 <script th:src="@{/js/main.js}"></script>
 </body>
