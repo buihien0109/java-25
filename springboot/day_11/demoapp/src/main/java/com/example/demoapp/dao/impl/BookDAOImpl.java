@@ -35,4 +35,14 @@ public class BookDAOImpl implements BookDAO {
         }
         return result;
     }
+
+    @Override
+    public List<Book> findByYearBetween(int startYear, int endYear) {
+        return List.of();
+    }
+
+    @Override
+    public List<Book> sortBooksByYearDesc() {
+        return List.of();
+    }
 }

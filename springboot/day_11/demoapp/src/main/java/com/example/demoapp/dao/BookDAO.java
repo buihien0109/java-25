@@ -10,4 +10,8 @@ public interface BookDAO {
     Book findById(int id);
 
     List<Book> findByTitleContainsIgnoreCase(String keyword);
+
+    List<Book> findByYearBetween(int startYear, int endYear);
+
+    List<Book> sortBooksByYearDesc();
 }
