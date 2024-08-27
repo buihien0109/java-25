@@ -1,0 +1,19 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+img {
+    max-width: 100%;
+}
+
+.logo {
+    width: 180px;
+}
+
+.movie-poster img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
