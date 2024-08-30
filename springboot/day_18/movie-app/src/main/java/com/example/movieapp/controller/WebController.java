@@ -10,10 +10,23 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 public class WebController {
     private final MovieService movieService;
+
+    @GetMapping("/")
+    public String getHomePage(Model model) {
+        List<Movie> listPhimBo = movieService.getMoviesByType(MovieType.PHIM_BO, true, 1, 6).getContent();
+        List<Movie> listPhimLe = movieService.getMoviesByType(MovieType.PHIM_LE, true, 1, 6).getContent();
+        List<Movie> listPhimChieuRap = movieService.getMoviesByType(MovieType.PHIM_CHIEU_RAP, true, 1, 6).getContent();
+        model.addAttribute("listPhimBo", listPhimBo);
+        model.addAttribute("listPhimLe", listPhimLe);
+        model.addAttribute("listPhimChieuRap", listPhimChieuRap);
+        return "web/index";
+    }
 
     // /phim-bo?page=1&pageSize=12
     @GetMapping("/phim-bo")
