@@ -1,5 +1,6 @@
 package com.example.movieapp.repository;
 
+import com.example.movieapp.entity.Blog;
 import com.example.movieapp.entity.Movie;
 import com.example.movieapp.model.enums.MovieType;
 import org.springframework.data.domain.Page;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MovieRepository extends JpaRepository<Movie, Integer> {
     List<Movie> findByName(String name);
@@ -34,4 +36,6 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
 
     // Ưng dung movie
     Page<Movie> findByTypeAndStatus(MovieType type, Boolean status, Pageable pageable);
+
+    Optional<Movie> findByIdAndSlugAndStatus(Integer id, String slug, Boolean status);
 }

@@ -1,9 +1,7 @@
 package com.example.movieapp.service;
 
 import com.example.movieapp.entity.Blog;
-import com.example.movieapp.entity.Movie;
-import com.example.movieapp.model.enums.MovieType;
-import com.example.movieapp.repository.MovieRepository;
+import com.example.movieapp.repository.BlogRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,16 +11,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class MovieService {
-    private final MovieRepository movieRepository;
+public class BlogService {
+    private final BlogRepository blogRepository;
 
-    public Page<Movie> getMoviesByType(MovieType type, Boolean status, int page, int pageSize) {
+    public Page<Blog> getBlogs(Boolean status, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by("createdAt").descending());
-        return movieRepository.findByTypeAndStatus(type, status, pageable);
+        return blogRepository.findByStatus(status, pageable);
     }
 
-    public Movie getMovieDetails(Integer id, String slug) {
-        return movieRepository.findByIdAndSlugAndStatus(id, slug, true)
+    public Blog getBlogDetails(Integer id, String slug) {
+        return blogRepository.findByIdAndSlugAndStatus(id, slug, true)
                 .orElse(null);
     }
 }

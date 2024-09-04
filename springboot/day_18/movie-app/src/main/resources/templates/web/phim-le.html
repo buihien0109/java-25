@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Danh sách phim bộ</title>
+    <title>Danh sách phim lẻ</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
           integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
@@ -42,7 +42,7 @@
 
 <section class="py-4">
     <div class="container">
-        <h3>Phim bộ mới cập nhật</h3>
+        <h3>Phim lẻ mới cập nhật</h3>
 
         <div class="row">
             <div class="col-2" th:each="movie : ${pageData.getContent()}">
@@ -61,15 +61,15 @@
             <nav aria-label="...">
                 <ul class="pagination">
                     <li class="page-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
-                        <a class="page-link" th:href="|/phim-bo?page=${currentPage - 1}|">Trang trước</a>
+                        <a class="page-link" th:href="|/phim-le?page=${currentPage - 1}|">Trang trước</a>
                     </li>
                     <li class="page-item"
                         th:classappend="${currentPage == number ? 'active' : ''}"
                         th:each="number : ${#numbers.sequence(1, pageData.getTotalPages())}">
-                        <a class="page-link" th:href="|/phim-bo?page=${number}|" th:text="${number}">1</a>
+                        <a class="page-link" th:href="|/phim-le?page=${number}|" th:text="${number}">1</a>
                     </li>
                     <li class="page-item" th:classappend="${currentPage == pageData.getTotalPages() ? 'disabled' : ''}">
-                        <a class="page-link" th:href="|/phim-bo?page=${currentPage + 1}|">Trang sau</a>
+                        <a class="page-link" th:href="|/phim-le?page=${currentPage + 1}|">Trang sau</a>
                     </li>
                 </ul>
             </nav>

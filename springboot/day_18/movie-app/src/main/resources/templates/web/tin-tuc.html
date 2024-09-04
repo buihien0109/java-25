@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Danh sách phim bộ</title>
+    <title>Tin tức</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
           integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
@@ -42,34 +42,50 @@
 
 <section class="py-4">
     <div class="container">
-        <h3>Phim bộ mới cập nhật</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a class="text-primary" href="/">Trang chủ</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Tin tức</li>
+            </ol>
+        </nav>
+
+        <div class="mb-3 d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">Tin tức</h3>
+        </div>
 
         <div class="row">
-            <div class="col-2" th:each="movie : ${pageData.getContent()}">
-                <a th:href="|/phim/${movie.id}/${movie.slug}|" class="movie-item text-black text-decoration-none">
-                    <div class="movie-poster rounded overflow-hidden">
-                        <img th:src="${movie.poster}" th:alt="${movie.name}">
-                    </div>
-                    <div class="movie-info">
-                        <p class="mt-2" th:text="${movie.name}">Tứ hải trọng minh</p>
-                    </div>
-                </a>
+            <div class="col-6" th:each="blog : ${pageData.getContent()}">
+                <div class="blog-item bg-body-tertiary rounded mb-4 overflow-hidden">
+                    <a class="d-flex" th:href="|/tin-tuc/${blog.id}/${blog.slug}|">
+                        <div class="blog-thumbnail">
+                            <img th:src="${blog.thumbnail}" th:alt="${blog.title}">
+                        </div>
+                        <div class="blog-info p-3">
+                            <h5 class="truncate-1-heading" th:text="${blog.title}">Những bộ phim chủ đề Trò chơi đỉnh
+                                cao</h5>
+                            <p class="fst-italic" style="font-size: 14px;" th:text="${#temporals.format(blog.createdAt, 'dd/MM/yyyy')}">04/09/2024</p>
+                            <p class="mb-0 truncate" th:text="${blog.description}">Bạn đam mê những Game đầy gay cấn
+                                kịch tính, hôm nay Ví MoMo xin mang
+                                đến 10 bộ phim đặc sắc về chủ đề Trò chơi.</p>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
 
-        <div class="d-flex justify-content-center" th:if="${pageData.getTotalPages() > 1}">
+        <div class="d-flex justify-content-center mt-4" th:if="${pageData.getTotalPages() > 1}">
             <nav aria-label="...">
                 <ul class="pagination">
                     <li class="page-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
-                        <a class="page-link" th:href="|/phim-bo?page=${currentPage - 1}|">Trang trước</a>
+                        <a class="page-link" th:href="|/tin-tuc?page=${currentPage - 1}|">Trang trước</a>
                     </li>
                     <li class="page-item"
                         th:classappend="${currentPage == number ? 'active' : ''}"
                         th:each="number : ${#numbers.sequence(1, pageData.getTotalPages())}">
-                        <a class="page-link" th:href="|/phim-bo?page=${number}|" th:text="${number}">1</a>
+                        <a class="page-link" th:href="|/tin-tuc?page=${number}|" th:text="${number}">1</a>
                     </li>
                     <li class="page-item" th:classappend="${currentPage == pageData.getTotalPages() ? 'disabled' : ''}">
-                        <a class="page-link" th:href="|/phim-bo?page=${currentPage + 1}|">Trang sau</a>
+                        <a class="page-link" th:href="|/tin-tuc?page=${currentPage + 1}|">Trang sau</a>
                     </li>
                 </ul>
             </nav>
