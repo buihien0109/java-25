@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -144,7 +145,42 @@ class MovieAppApplicationTests {
         Slugify slugify = Slugify.builder().build();
         Random rd = new Random();
 
+        List<Country> countries = countryRepository.findAll();
+        List<Actor> actors = actorRepository.findAll();
+        List<Director> directors = directorRepository.findAll();
+        List<Genre> genres = genreRepository.findAll();
+
         for (int i = 0; i < 150; i++) {
+            // Random 1 country
+            Country rdCountry = countries.get(rd.nextInt(countries.size()));
+
+            // Random 1 -> 3 genres
+            List<Genre> rdGenres = new ArrayList<>();
+            for (int j = 0; j < rd.nextInt(3) + 1; j++) {
+                Genre rdGenre = genres.get(rd.nextInt(genres.size()));
+                if (!rdGenres.contains(rdGenre)) {
+                    rdGenres.add(rdGenre);
+                }
+            }
+
+            // Random 5 -> 7 actors
+            List<Actor> rdActors = new ArrayList<>();
+            for (int j = 0; j < rd.nextInt(3) + 5; j++) {
+                Actor rdActor = actors.get(rd.nextInt(actors.size()));
+                if (!rdActors.contains(rdActor)) {
+                    rdActors.add(rdActor);
+                }
+            }
+
+            // Random 1 -> 3 directors
+            List<Director> rdDirectors = new ArrayList<>();
+            for (int j = 0; j < rd.nextInt(3) + 1; j++) {
+                Director rdDirector = directors.get(rd.nextInt(directors.size()));
+                if (!rdDirectors.contains(rdDirector)) {
+                    rdDirectors.add(rdDirector);
+                }
+            }
+
             String name = faker.name().fullName();
             Boolean status = faker.bool().bool();
             Movie movie = Movie.builder()
@@ -160,8 +196,80 @@ class MovieAppApplicationTests {
                     .createdAt(LocalDateTime.now())
                     .updatedAt(LocalDateTime.now())
                     .publishedAt(status ? LocalDateTime.now() : null)
+                    .country(rdCountry)
+                    .actors(rdActors)
+                    .directors(rdDirectors)
+                    .genres(rdGenres)
                     .build();
             movieRepository.save(movie);
+        }
+    }
+
+    @Test
+    void save_reviews() {
+        Faker faker = new Faker();
+        Random rd = new Random();
+
+        List<Movie> movies = movieRepository.findAll();
+        List<User> users = userRepository.findAll();
+
+        for (Movie movie : movies) {
+            // Create 10 -> 20 reviews for each movie
+            for (int i = 0; i < rd.nextInt(11) + 10; i++) {
+                // Random 1 user
+                User rdUser = users.get(rd.nextInt(users.size()));
+
+                Review review = Review.builder()
+                        .content(faker.lorem().paragraph())
+                        .rating(rd.nextInt(6) + 5)
+                        .movie(movie)
+                        .user(rdUser)
+                        .createdAt(LocalDateTime.now())
+                        .updatedAt(LocalDateTime.now())
+                        .build();
+                reviewRepository.save(review);
+            }
+        }
+    }
+
+    @Test
+    void save_episodes() {
+        Faker faker = new Faker();
+        Random rd = new Random();
+
+        List<Movie> movies = movieRepository.findAll();
+
+        for (Movie movie : movies) {
+            if (movie.getType().equals(MovieType.PHIM_BO)) {
+                // Random 5 -> 10 episodes for each movie
+                for (int i = 0; i < rd.nextInt(6) + 5; i++) {
+                    Episode episode = Episode.builder()
+                            .name("Tap " + (i + 1))
+                            .duration(rd.nextInt(31) + 30)
+                            .displayOrder(i + 1)
+                            .videoUrl("https://www.youtube.com/embed/gCUg6Td5fgQ?si=OCtNkpFF03gq03ny")
+                            .movie(movie)
+                            .status(true)
+                            .createdAt(LocalDateTime.now())
+                            .updatedAt(LocalDateTime.now())
+                            .publishedAt(LocalDateTime.now())
+                            .build();
+                    episodeRepository.save(episode);
+                }
+            } else {
+                Episode episode = Episode.builder()
+                        .name("Tap full")
+                        .duration(rd.nextInt(91) + 30)
+                        .displayOrder(1)
+                        .videoUrl("https://www.youtube.com/embed/gCUg6Td5fgQ?si=OCtNkpFF03gq03ny")
+                        .movie(movie)
+                        .status(true)
+                        .createdAt(LocalDateTime.now())
+                        .updatedAt(LocalDateTime.now())
+                        .publishedAt(LocalDateTime.now())
+                        .build();
+                episodeRepository.save(episode);
+            }
         }
     }
 
@@ -171,7 +279,12 @@ class MovieAppApplicationTests {
         Random rd = new Random();
         Slugify slugify = Slugify.builder().build();
 
+        List<User> users = userRepository.findByRole(UserRole.ADMIN);
+
         for (int i = 0; i < 100; i++) {
+            // random 1 user
+            User rdUser = users.get(rd.nextInt(users.size()));
+
             String title = faker.book().title();
             boolean status = rd.nextInt(2) == 0;
             Blog blog = Blog.builder()
@@ -184,6 +297,7 @@ class MovieAppApplicationTests {
                     .createdAt(LocalDateTime.now())
                     .updatedAt(LocalDateTime.now())
                     .publishedAt(status ? LocalDateTime.now() : null)
+                    .user(rdUser)
                     .build();
 
             blogRepository.save(blog);
