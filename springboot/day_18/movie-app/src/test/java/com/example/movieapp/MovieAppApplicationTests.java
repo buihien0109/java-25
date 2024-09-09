@@ -1,10 +1,9 @@
 package com.example.movieapp;
 
-import com.example.movieapp.entity.Blog;
-import com.example.movieapp.entity.Movie;
+import com.example.movieapp.entity.*;
 import com.example.movieapp.model.enums.MovieType;
-import com.example.movieapp.repository.BlogRepository;
-import com.example.movieapp.repository.MovieRepository;
+import com.example.movieapp.model.enums.UserRole;
+import com.example.movieapp.repository.*;
 import com.github.javafaker.Faker;
 import com.github.slugify.Slugify;
 import org.junit.jupiter.api.Test;
@@ -13,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,6 +24,119 @@ class MovieAppApplicationTests {
 
     @Autowired
     private BlogRepository blogRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private CountryRepository countryRepository;
+
+    @Autowired
+    private GenreRepository genreRepository;
+
+    @Autowired
+    private ActorRepository actorRepository;
+
+    @Autowired
+    private DirectorRepository directorRepository;
+
+    @Autowired
+    private ReviewRepository reviewRepository;
+
+    @Autowired
+    private EpisodeRepository episodeRepository;
+
+    @Autowired
+    private HistoryRepository historyRepository;
+
+    @Autowired
+    private FavoriteRepository favoriteRepository;
+
+    @Test
+    void save_users() {
+        Faker faker = new Faker();
+        for (int i = 0; i < 50; i++) {
+            String name = faker.name().fullName();
+            User user = User.builder()
+                    .name(name)
+                    .email(faker.internet().emailAddress())
+                    .avatar("https://placehold.co/200x200?text=" + name.substring(0, 1).toUpperCase())
+                    .password("123")
+                    .role(i == 0 || i == 1 ? UserRole.ADMIN : UserRole.USER)
+                    .createdAt(LocalDateTime.now())
+                    .updatedAt(LocalDateTime.now())
+                    .build();
+            userRepository.save(user);
+        }
+    }
+
+    @Test
+    void save_genres() {
+        Faker faker = new Faker();
+        Slugify slugify = Slugify.builder().build();
+        for (int i = 0; i < 10; i++) {
+            String name = faker.leagueOfLegends().champion();
+            Genre genre = Genre.builder()
+                    .name(name)
+                    .slug(slugify.slugify(name))
+                    .createdAt(LocalDateTime.now())
+                    .updatedAt(LocalDateTime.now())
+                    .build();
+            genreRepository.save(genre);
+        }
+    }
+
+    @Test
+    void save_countries() {
+        Faker faker = new Faker();
+        Slugify slugify = Slugify.builder().build();
+        for (int i = 0; i < 10; i++) {
+            String name = faker.country().name();
+            Country country = Country.builder()
+                    .name(name)
+                    .slug(slugify.slugify(name))
+                    .createdAt(LocalDateTime.now())
+                    .updatedAt(LocalDateTime.now())
+                    .build();
+            countryRepository.save(country);
+        }
+    }
+
+    @Test
+    void save_actors() {
+        Faker faker = new Faker();
+        Slugify slugify = Slugify.builder().build();
+        for (int i = 0; i < 100; i++) {
+            String name = faker.name().fullName();
+            Actor actor = Actor.builder()
+                    .name(name)
+                    .slug(slugify.slugify(name))
+                    .avatar("https://placehold.co/200x200?text=" + name.substring(0, 1).toUpperCase())
+                    .bio(faker.lorem().paragraph())
+                    .createdAt(LocalDateTime.now())
+                    .updatedAt(LocalDateTime.now())
+                    .build();
+            actorRepository.save(actor);
+        }
+    }
+
+    @Test
+    void save_directors() {
+        Faker faker = new Faker();
+        Slugify slugify = Slugify.builder().build();
+        for (int i = 0; i < 20; i++) {
+            String name = faker.name().fullName();
+            Director director = Director.builder()
+                    .name(name)
+                    .slug(slugify.slugify(name))
+                    .avatar("https://placehold.co/200x200?text=" + name.substring(0, 1).toUpperCase())
+                    .bio(faker.lorem().paragraph())
+                    .createdAt(LocalDateTime.now())
+                    .updatedAt(LocalDateTime.now())
+                    .build();
+            directorRepository.save(director);
+        }
+    }
 
     @Test
     void save_movies() {
@@ -40,7 +151,7 @@ class MovieAppApplicationTests {
                     .name(name)
                     .slug(slugify.slugify(name))
                     .description(faker.lorem().paragraph())
-                    .poster(generateLinkImage(name))
+                    .poster("https://placehold.co/200x200?text=" + name.substring(0, 1).toUpperCase())
                     .releaseYear(faker.number().numberBetween(2020, 2024))
                     .rating(faker.number().randomDouble(1, 6, 10))
                     .trailerUrl("https://www.youtube.com/embed/gCUg6Td5fgQ?si=OCtNkpFF03gq03ny")
