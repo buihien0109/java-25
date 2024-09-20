@@ -9,9 +9,11 @@ import com.example.movieapp.repository.MovieRepository;
 import com.example.movieapp.repository.ReviewRepository;
 import com.example.movieapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +21,10 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final MovieRepository movieRepository;
     private final UserRepository userRepository;
+
+    public List<Review> getReviewsByMovieId(Integer movieId) {
+        return reviewRepository.findByMovie_Id(movieId, Sort.by(Sort.Direction.DESC, "createdAt"));
+    }
 
     public Review createReview(CreateReviewRequest request) {
         // TODO: Fix user. Sau này user sẽ là user đang đăng nhập

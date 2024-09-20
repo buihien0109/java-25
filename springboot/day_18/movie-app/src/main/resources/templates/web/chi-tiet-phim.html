@@ -191,79 +191,40 @@
                         data-bs-target="#modalReview">Viết bình luận</button>
             </div>
             <div class="review-list">
-                <div class="rating-item d-flex align-items-center mb-3 pb-3">
-                    <div class="rating-avatar"><img src="https://placehold.co/200x200?text=T" alt="Hà Hà Thành"></div>
-                    <div class="rating-info ms-3">
-                        <div class="d-flex align-items-center"><p class="rating-name mb-0"><strong>Hà Hà Thành</strong>
-                        </p>
-                            <p class="rating-time mb-0 ms-2">17/05/2022</p></div>
-                        <div class="rating-star"><p class="mb-0 fw-medium"><span class="rating-icon me-1"><i
-                                class="fa fa-star"></i></span><span>10/10 Xuất sắc</span></p></div>
-                        <p class="rating-content mt-1 mb-0 text-muted">ok</p></div>
-                </div>
-                <div class="rating-item d-flex align-items-center mb-3 pb-3">
-                    <div class="rating-avatar"><img src="https://placehold.co/200x200?text=Q" alt="Tạ Thanh Quang">
+                <div class="rating-item d-flex align-items-center mb-3 pb-3" th:each="review : ${reviews}">
+                    <div class="rating-avatar">
+                        <img th:src="${review.user.avatar}" th:alt="${review.user.name}">
                     </div>
                     <div class="rating-info ms-3">
-                        <div class="d-flex align-items-center"><p class="rating-name mb-0"><strong>Tạ Thanh
-                            Quang</strong></p>
-                            <p class="rating-time mb-0 ms-2">11/05/2022</p></div>
-                        <div class="rating-star"><p class="mb-0 fw-medium"><span class="rating-icon me-1"><i
-                                class="fa fa-star"></i></span><span>10/10 Xuất sắc</span></p></div>
-                        <p class="rating-content mt-1 mb-0 text-muted">phim dễ thương xỉu</p></div>
-                </div>
-                <div class="rating-item d-flex align-items-center mb-3 pb-3">
-                    <div class="rating-avatar"><img src="https://placehold.co/200x200?text=D" alt="Lê Hải Dũng"></div>
-                    <div class="rating-info ms-3">
-                        <div class="d-flex align-items-center"><p class="rating-name mb-0"><strong>Lê Hải Dũng</strong>
-                        </p>
-                            <p class="rating-time mb-0 ms-2">07/05/2022</p></div>
-                        <div class="rating-star"><p class="mb-0 fw-medium"><span class="rating-icon me-1"><i
-                                class="fa fa-star"></i></span><span>10/10 Xuất sắc</span></p></div>
-                        <p class="rating-content mt-1 mb-0 text-muted">Phim hay, đáng xem, có pha chút hài hước 👍👍👍
-                            Thích hợp cho các bé nhỏ vì phim đề cao tình bạn, tính đoàn kết 🤝🤝🤝
-                            Có 3 nhân vật siêu đáng yêu, mỗi nhân vật có 1 tính cách riêng, bạn chó cũng dễ thương
-                            ☺️☺️☺️</p></div>
-                </div>
-                <div class="rating-item d-flex align-items-center mb-3 pb-3">
-                    <div class="rating-avatar"><img src="https://placehold.co/200x200?text=N" alt="Tạ Hạ Nam"></div>
-                    <div class="rating-info ms-3">
-                        <div class="d-flex align-items-center"><p class="rating-name mb-0"><strong>Tạ Hạ Nam</strong>
-                        </p>
-                            <p class="rating-time mb-0 ms-2">03/05/2022</p></div>
-                        <div class="rating-star"><p class="mb-0 fw-medium"><span class="rating-icon me-1"><i
-                                class="fa fa-star"></i></span><span>10/10 Xuất sắc</span></p></div>
-                        <p class="rating-content mt-1 mb-0 text-muted">phim hay, vui</p></div>
-                </div>
-                <div class="rating-item d-flex align-items-center mb-3 pb-3">
-                    <div class="rating-avatar"><img src="https://placehold.co/200x200?text=H" alt="Võ Văn Hưng"></div>
-                    <div class="rating-info ms-3">
-                        <div class="d-flex align-items-center"><p class="rating-name mb-0"><strong>Võ Văn Hưng</strong>
-                        </p>
-                            <p class="rating-time mb-0 ms-2">02/05/2022</p></div>
-                        <div class="rating-star"><p class="mb-0 fw-medium"><span class="rating-icon me-1"><i
-                                class="fa fa-star"></i></span><span>10/10 Xuất sắc</span></p></div>
-                        <p class="rating-content mt-1 mb-0 text-muted">Phim kỷ xảo đẹp, nhưng nội dung không có gì
-                            mới.</p></div>
+                        <div class="d-flex align-items-center">
+                            <p class="rating-name mb-0"><strong th:text="${review.user.name}">Hà Hà Thành</strong></p>
+                            <p class="rating-time mb-0 ms-2" th:text="${#temporals.format(review.createdAt, 'dd/MM/yyyy')}">17/05/2022</p></div>
+                        <div class="rating-star">
+                            <p class="mb-0 fw-medium">
+                                <span class="rating-icon me-1"><i class="fa fa-star"></i></span>
+                                <span><th:block th:text="${review.rating}"></th:block>/10</span>
+                            </p>
+                        </div>
+                        <p class="rating-content mt-1 mb-0 text-muted" th:text="${review.content}">ok</p></div>
                 </div>
             </div>
-            <div id="review-pagination" class="d-flex justify-content-center align-items-center">
-                <nav aria-label="...">
-                    <ul class="pagination">
-                        <li class="page-item disabled">
-                            <a class="page-link">Previous</a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item active" aria-current="page">
-                            <a class="page-link" href="#">2</a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">Next</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+<!--            <div id="review-pagination" class="d-flex justify-content-center align-items-center">-->
+<!--                <nav aria-label="...">-->
+<!--                    <ul class="pagination">-->
+<!--                        <li class="page-item disabled">-->
+<!--                            <a class="page-link">Previous</a>-->
+<!--                        </li>-->
+<!--                        <li class="page-item"><a class="page-link" href="#">1</a></li>-->
+<!--                        <li class="page-item active" aria-current="page">-->
+<!--                            <a class="page-link" href="#">2</a>-->
+<!--                        </li>-->
+<!--                        <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+<!--                        <li class="page-item">-->
+<!--                            <a class="page-link" href="#">Next</a>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                </nav>-->
+<!--            </div>-->
         </div>
     </div>
 </section>

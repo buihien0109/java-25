@@ -36,3 +36,17 @@ function highlightStars(rating) {
         }
     });
 }
+
+const formReviewEl = document.getElementById("form-review");
+formReviewEl.addEventListener("submit", () => {
+
+})
+
+// Tạo review
+const createReview = () => {}
+
+// Cập nhật review
+const updateReview = () => {}
+
+// Xóa review
+const deleteReview = () => {}

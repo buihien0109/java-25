@@ -2,9 +2,11 @@ package com.example.movieapp.controller;
 
 import com.example.movieapp.entity.Blog;
 import com.example.movieapp.entity.Movie;
+import com.example.movieapp.entity.Review;
 import com.example.movieapp.model.enums.MovieType;
 import com.example.movieapp.service.BlogService;
 import com.example.movieapp.service.MovieService;
+import com.example.movieapp.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,7 @@ import java.util.List;
 public class WebController {
     private final MovieService movieService;
     private final BlogService blogService;
+    private final ReviewService reviewService;
 
     @GetMapping("/")
     public String getHomePage(Model model) {
@@ -69,7 +72,9 @@ public class WebController {
                               @PathVariable Integer id,
                               @PathVariable String slug) {
         Movie movie = movieService.getMovieDetails(id, slug);
+        List<Review> reviews = reviewService.getReviewsByMovieId(id);
         model.addAttribute("movie", movie);
+        model.addAttribute("reviews", reviews);
         return "web/chi-tiet-phim";
     }
 
