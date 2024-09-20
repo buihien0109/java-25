@@ -73,15 +73,45 @@ const formatDate = dateString => {
 }
 
 const formReviewEl = document.getElementById("form-review");
-formReviewEl.addEventListener("submit", () => {
-
+const reviewContentEl = document.getElementById("review-content");
+formReviewEl.addEventListener("submit", (e) => {
+    e.preventDefault();
+    createReview();
 })
 
 // Tạo review
-const createReview = () => {}
+const createReview = async () => {
+    if (currentRating === 0) {
+        alert("Vui lòng chọn số sao");
+        return;
+    }
+
+    if (reviewContentEl.value.trim() === "") {
+        alert("Vui lòng nhập nội dung bình luận");
+        return;
+    }
+
+    const request = {
+        rating: currentRating,
+        content: reviewContentEl.value,
+        movieId: movie.id
+    }
+    console.log(request);
+
+    try {
+        let res = await axios.post("/api/reviews", request);
+        console.log(res.data)
+        reviews.unshift(res.data);
+        renderReviews(reviews);
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 // Cập nhật review
-const updateReview = () => {}
+const updateReview = () => {
+}
 
 // Xóa review
-const deleteReview = () => {}
+const deleteReview = () => {
+}
