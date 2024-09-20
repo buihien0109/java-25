@@ -857,3 +857,18 @@ strong {
     height: 1rem;
 }
 /* End btn top */
+
+.rating {
+    font-size: 20px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.star {
+    display: inline-block;
+}
+
+.star:hover,
+.star.active {
+    color: #EDBB0E;
+}
