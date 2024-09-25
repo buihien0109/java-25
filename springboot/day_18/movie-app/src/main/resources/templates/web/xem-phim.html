@@ -124,19 +124,10 @@
                 </div>
                 <div>
                     <div class="d-flex align-items-center">
-                        <a th:if="${movie.type.toString() == 'PHIM_BO'}"
-                           class="d-inline-block btn btn-danger px-5 py-2 mt-3 rounded me-2"
-                           th:href="|/xem-phim/phim/${movie.id}/${movie.slug}?tap=1|">
-                            <span class="me-1"><i class="fa-solid fa-play"></i></span>Xem phim
-                        </a>
-                        <a th:if="${movie.type.toString() == 'PHIM_LE' || movie.type.toString() == 'PHIM_CHIEU_RAP'}"
-                           class="d-inline-block btn btn-danger px-5 py-2 mt-3 rounded me-2"
-                           th:href="|/xem-phim/phim/${movie.id}/${movie.slug}?tap=full|">
-                            <span class="me-1"><i class="fa-solid fa-play"></i></span>Xem phim
-                        </a>
                         <div id="btn-wishlist-container">
-                            <button class="d-inline-block btn bg-dark px-5 py-2 mt-3 rounded text-white"><span
-                                    class="me-1"><i class="fa-solid fa-heart"></i></span>Thêm vào yêu thích
+                            <button
+                                    class="d-inline-block btn bg-dark px-5 py-2 mt-3 rounded text-white">
+                                <span class="me-1"><i class="fa-solid fa-heart"></i></span>Thêm vào yêu thích
                             </button>
                         </div>
                     </div>
@@ -147,7 +138,8 @@
         <div class="mt-4" th:if="${movie.type.toString() == 'PHIM_BO'}">
             <h4 class="mb-3">Tập phim</h4>
             <a th:each="episode : ${episodes}"
-               class="btn btn-dark me-2"
+               class="btn me-2"
+               th:classappend="${episode.displayOrder == currentEpisode.displayOrder} ? 'btn-danger' : 'btn-dark'"
                th:href="|/xem-phim/phim/${movie.id}/${movie.slug}?tap=${episode.displayOrder}|"
             >Tập
                 <th:block th:text="${episode.displayOrder}"></th:block>
