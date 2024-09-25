@@ -1,10 +1,12 @@
 package com.example.movieapp.controller;
 
 import com.example.movieapp.entity.Blog;
+import com.example.movieapp.entity.Episode;
 import com.example.movieapp.entity.Movie;
 import com.example.movieapp.entity.Review;
 import com.example.movieapp.model.enums.MovieType;
 import com.example.movieapp.service.BlogService;
+import com.example.movieapp.service.EpisodeService;
 import com.example.movieapp.service.MovieService;
 import com.example.movieapp.service.ReviewService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ public class WebController {
     private final MovieService movieService;
     private final BlogService blogService;
     private final ReviewService reviewService;
+    private final EpisodeService episodeService;
 
     @GetMapping("/")
     public String getHomePage(Model model) {
@@ -58,8 +61,8 @@ public class WebController {
 
     @GetMapping("/phim-chieu-rap")
     public String getPhimChieuRapPage(Model model,
-                                @RequestParam(required = false, defaultValue = "1") int page,
-                                @RequestParam(required = false, defaultValue = "12") int pageSize) {
+                                      @RequestParam(required = false, defaultValue = "1") int page,
+                                      @RequestParam(required = false, defaultValue = "12") int pageSize) {
         Page<Movie> pageData = movieService.getMoviesByType(MovieType.PHIM_CHIEU_RAP, true, page, pageSize);
         model.addAttribute("pageData", pageData);
         model.addAttribute("currentPage", page);
@@ -69,19 +72,37 @@ public class WebController {
     // /phim/1/chua-te-nhung-chiec-nhan
     @GetMapping("/phim/{id}/{slug}")
     public String getMovieDetailsPage(Model model,
-                              @PathVariable Integer id,
-                              @PathVariable String slug) {
+                                      @PathVariable Integer id,
+                                      @PathVariable String slug) {
         Movie movie = movieService.getMovieDetails(id, slug);
         List<Review> reviews = reviewService.getReviewsByMovieId(id);
+        List<Episode> episodes = episodeService.getEpisodesActiveByMovie(id);
         model.addAttribute("movie", movie);
         model.addAttribute("reviews", reviews);
+        model.addAttribute("episodes", episodes);
         return "web/chi-tiet-phim";
+    }
+
+    @GetMapping("/xem-phim/phim/{id}/{slug}")
+    public String getMovieStreamingDetailsPage(Model model,
+                                               @PathVariable Integer id,
+                                               @PathVariable String slug,
+                                               @RequestParam String tap) {
+        Movie movie = movieService.getMovieDetails(id, slug);
+        List<Review> reviews = reviewService.getReviewsByMovieId(id);
+        List<Episode> episodes = episodeService.getEpisodesActiveByMovie(id);
+        Episode currentEpisode = episodeService.getEpisodeByDisplayOrder(id, tap);
+        model.addAttribute("movie", movie);
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("episodes", episodes);
+        model.addAttribute("currentEpisode", currentEpisode);
+        return "web/xem-phim";
     }
 
     @GetMapping("/tin-tuc")
     public String getBlogPage(Model model,
-                                @RequestParam(required = false, defaultValue = "1") int page,
-                                @RequestParam(required = false, defaultValue = "10") int pageSize) {
+                              @RequestParam(required = false, defaultValue = "1") int page,
+                              @RequestParam(required = false, defaultValue = "10") int pageSize) {
         Page<Blog> pageData = blogService.getBlogs(true, page, pageSize);
         model.addAttribute("pageData", pageData);
         model.addAttribute("currentPage", page);
@@ -90,8 +111,8 @@ public class WebController {
 
     @GetMapping("/tin-tuc/{id}/{slug}")
     public String getBlogDetailsPage(Model model,
-                              @PathVariable Integer id,
-                              @PathVariable String slug) {
+                                     @PathVariable Integer id,
+                                     @PathVariable String slug) {
         Blog blog = blogService.getBlogDetails(id, slug);
         model.addAttribute("blog", blog);
         return "web/chi-tiet-tin-tuc";
