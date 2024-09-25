@@ -50,18 +50,38 @@ const renderReviews = reviews => {
                 <div class="rating-info ms-3">
                     <div class="d-flex align-items-center">
                         <p class="rating-name mb-0"><strong>${review.user.name}</strong></p>
-                        <p class="rating-time mb-0 ms-2">${formatDate(review.createdAt)}</p></div>
+                        <p class="rating-time mb-0 ms-2">${formatDate(review.createdAt)}</p>
+                    </div>
                     <div class="rating-star">
                         <p class="mb-0 fw-medium">
                             <span class="rating-icon me-1"><i class="fa fa-star"></i></span>
                             <span>${review.rating}/10</span>
                         </p>
                     </div>
-                    <p class="rating-content mt-1 mb-0 text-muted">${review.content}</p></div>
+                    <p class="rating-content mt-1 mb-0 text-muted">${review.content}</p>
+                    <div>
+                        <button onclick="openModalUpdateReview(${review.id})" 
+                            class="text-primary border-0 bg-transparent text-decoration-underline me-1">Sửa
+                        </button>
+                        <button onclick="deleteReview(${review.id})"
+                                class="text-danger border-0 bg-transparent text-decoration-underline me-1">Xóa
+                        </button>
+                    </div>
+                </div>
             </div>
         `
     });
     reviewListEl.innerHTML = html;
+}
+
+const render = () => {
+    $('#review-pagination').pagination({
+        dataSource: reviews,
+        pageSize: 5,
+        callback: function(data, pagination) {
+            renderReviews(data);
+        }
+    })
 }
 
 const formatDate = dateString => {
@@ -74,20 +94,54 @@ const formatDate = dateString => {
 
 const formReviewEl = document.getElementById("form-review");
 const reviewContentEl = document.getElementById("review-content");
+const modalReviewEl = document.getElementById('modalReview');
+const titleModalReviewEl = document.querySelector('#modalReview .modal-title');
+const btnSubmitReviewEl = document.getElementById("btn-submit");
+const modalReviewObj = new bootstrap.Modal('#modalReview', {
+    keyboard: false
+})
+let idUpdate = null;
+
+modalReviewEl.addEventListener('hidden.bs.modal', event => {
+    resetStars();
+    currentRating = 0;
+    ratingValue.innerHTML = "Vui lòng chọn đánh giá";
+    reviewContentEl.value = "";
+    titleModalReviewEl.innerHTML = "Tạo bình luận";
+    btnSubmitReviewEl.innerHTML = "Tạo bình luận";
+    idUpdate = null;
+})
+
+const openModalUpdateReview = (id) => {
+    const review = reviews.find(review => review.id === id);
+    currentRating = review.rating;
+    highlightStars(currentRating);
+    ratingValue.innerHTML = `Bạn đã đánh giá ${currentRating} sao.`;
+    reviewContentEl.value = review.content;
+    titleModalReviewEl.innerHTML = "Cập nhật bình luận";
+    btnSubmitReviewEl.innerHTML = "Cập nhật bình luận";
+    modalReviewObj.show();
+    idUpdate = id;
+};
+
 formReviewEl.addEventListener("submit", (e) => {
     e.preventDefault();
-    createReview();
+    if (idUpdate) {
+        updateReview();
+    } else {
+        createReview();
+    }
 })
 
 // Tạo review
 const createReview = async () => {
     if (currentRating === 0) {
-        alert("Vui lòng chọn số sao");
+        toastr.warning("Vui lòng chọn số sao");
         return;
     }
 
     if (reviewContentEl.value.trim() === "") {
-        alert("Vui lòng nhập nội dung bình luận");
+        toastr.warning("Vui lòng nhập nội dung bình luận");
         return;
     }
 
@@ -96,22 +150,64 @@ const createReview = async () => {
         content: reviewContentEl.value,
         movieId: movie.id
     }
-    console.log(request);
 
     try {
         let res = await axios.post("/api/reviews", request);
         console.log(res.data)
         reviews.unshift(res.data);
-        renderReviews(reviews);
+        render(reviews);
+        modalReviewObj.hide();
+        toastr.success("Tạo bình luận thành công");
     } catch (error) {
         console.log(error);
+        toastr.error(error.response.data.message);
     }
 }
 
 // Cập nhật review
-const updateReview = () => {
+const updateReview = async () => {
+    if (currentRating === 0) {
+        toastr.warning("Vui lòng chọn số sao");
+        return;
+    }
+
+    if (reviewContentEl.value.trim() === "") {
+        toastr.warning("Vui lòng nhập nội dung bình luận");
+        return;
+    }
+
+    const request = {
+        rating: currentRating,
+        content: reviewContentEl.value,
+    }
+
+    try {
+        let res = await axios.put(`/api/reviews/${idUpdate}`, request);
+        const index = reviews.findIndex(review => review.id === idUpdate);
+        reviews[index] = res.data;
+        render(reviews);
+        modalReviewObj.hide();
+        toastr.success("Cập nhật bình luận thành công");
+    } catch (error) {
+        console.log(error);
+        toastr.error(error.response.data.message);
+    }
 }
 
 // Xóa review
-const deleteReview = () => {
+const deleteReview = async (id) => {
+    const isConfirm = confirm("Bạn có chắc chắn muốn xóa bình luận này không?");
+    if (!isConfirm) return;
+
+    try {
+        let res = await axios.delete(`/api/reviews/${id}`);
+        reviews = reviews.filter(review => review.id !== id);
+        render(reviews);
+        toastr.success("Xóa bình luận thành công");
+    } catch (error) {
+        console.log(error);
+        toastr.error(error.response.data.message);
+    }
 }
+
+render();
