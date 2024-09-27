@@ -8,6 +8,7 @@ import com.example.movieapp.model.request.UpdateReviewRequest;
 import com.example.movieapp.repository.MovieRepository;
 import com.example.movieapp.repository.ReviewRepository;
 import com.example.movieapp.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -21,17 +22,14 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final MovieRepository movieRepository;
     private final UserRepository userRepository;
+    private final HttpSession session;
 
     public List<Review> getReviewsByMovieId(Integer movieId) {
         return reviewRepository.findByMovie_Id(movieId, Sort.by(Sort.Direction.DESC, "createdAt"));
     }
 
     public Review createReview(CreateReviewRequest request) {
-        // TODO: Fix user. Sau này user sẽ là user đang đăng nhập
-        Integer userId = 1;
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
-
+        User user = (User) session.getAttribute("currentUser");
         Movie movie = movieRepository.findById(request.getMovieId())
                 .orElseThrow(() -> new RuntimeException("Movie not found with id: " + request.getMovieId()));
 
@@ -48,11 +46,7 @@ public class ReviewService {
     }
 
     public Review updateReview(Integer id, UpdateReviewRequest request) {
-        // TODO: Fix user. Sau này user sẽ là user đang đăng nhập
-        Integer userId = 1;
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
-
+        User user = (User) session.getAttribute("currentUser");
         Review review = reviewRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Review not found with id: " + id));
 
@@ -68,11 +62,7 @@ public class ReviewService {
     }
 
     public void deleteReview(Integer id) {
-        // TODO: Fix user. Sau này user sẽ là user đang đăng nhập
-        Integer userId = 1;
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
-
+        User user = (User) session.getAttribute("currentUser");
         Review review = reviewRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Review not found with id: " + id));
 

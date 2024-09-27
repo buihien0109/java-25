@@ -1,14 +1,12 @@
 package com.example.movieapp.controller;
 
-import com.example.movieapp.entity.Blog;
-import com.example.movieapp.entity.Episode;
-import com.example.movieapp.entity.Movie;
-import com.example.movieapp.entity.Review;
+import com.example.movieapp.entity.*;
 import com.example.movieapp.model.enums.MovieType;
 import com.example.movieapp.service.BlogService;
 import com.example.movieapp.service.EpisodeService;
 import com.example.movieapp.service.MovieService;
 import com.example.movieapp.service.ReviewService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -116,5 +114,14 @@ public class WebController {
         Blog blog = blogService.getBlogDetails(id, slug);
         model.addAttribute("blog", blog);
         return "web/chi-tiet-tin-tuc";
+    }
+
+    @GetMapping("/dang-nhap")
+    public String loginPage(HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("currentUser");
+        if (user != null) {
+            return "redirect:/";
+        }
+        return "web/dang-nhap";
     }
 }
