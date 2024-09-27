@@ -872,3 +872,7 @@ strong {
 .star.active {
     color: #EDBB0E;
 }
+
+#form-login {
+    width: 400px;
+}
