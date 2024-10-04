@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class MovieService {
@@ -24,5 +26,9 @@ public class MovieService {
     public Movie getMovieDetails(Integer id, String slug) {
         return movieRepository.findByIdAndSlugAndStatus(id, slug, true)
                 .orElse(null);
+    }
+
+    public List<Movie> getAllMovies() {
+        return movieRepository.findAll(Sort.by("createdAt").descending());
     }
 }

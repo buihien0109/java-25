@@ -33,4 +33,18 @@ public class AuthApi {
             return ResponseEntity.badRequest().body(errorResponse);
         }
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout() {
+        try {
+            authService.logout();
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            ErrorResponse errorResponse = ErrorResponse.builder()
+                    .status(HttpStatus.BAD_REQUEST)
+                    .message(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorResponse);
+        }
+    }
 }

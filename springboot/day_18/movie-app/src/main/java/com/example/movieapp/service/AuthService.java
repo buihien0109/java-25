@@ -26,4 +26,8 @@ public class AuthService {
         // Co the luu trong cookie, redis, database, ...
         session.setAttribute("currentUser", user);
     }
+
+    public void logout() {
+        session.removeAttribute("currentUser");
+    }
 }

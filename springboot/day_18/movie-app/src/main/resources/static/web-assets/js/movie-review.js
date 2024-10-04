@@ -59,14 +59,18 @@ const renderReviews = reviews => {
                         </p>
                     </div>
                     <p class="rating-content mt-1 mb-0 text-muted">${review.content}</p>
-                    <div>
-                        <button onclick="openModalUpdateReview(${review.id})" 
-                            class="text-primary border-0 bg-transparent text-decoration-underline me-1">Sửa
-                        </button>
-                        <button onclick="deleteReview(${review.id})"
-                                class="text-danger border-0 bg-transparent text-decoration-underline me-1">Xóa
-                        </button>
-                    </div>
+                    ${currentUser && currentUser.id === review.user.id 
+                        ? `
+                        <div>
+                            <button onclick="openModalUpdateReview(${review.id})" 
+                                class="text-primary border-0 bg-transparent text-decoration-underline me-1">Sửa
+                            </button>
+                            <button onclick="deleteReview(${review.id})"
+                                    class="text-danger border-0 bg-transparent text-decoration-underline me-1">Xóa
+                            </button>
+                        </div>
+                        ` : ""
+                    }
                 </div>
             </div>
         `
