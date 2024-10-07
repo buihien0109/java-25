@@ -74,10 +74,10 @@
                                             <label>Thể loại</label>
                                             <div class="select2-purple">
                                                 <select class="select2 form-control" multiple="multiple" id="genre">
-                                                    <option
-                                                            th:each="genre : ${genres}"
+                                                    <option th:each="genre : ${genres}"
                                                             th:value="${genre.id}"
-                                                            th:text="${genre.name}">Chiến tranh</option>
+                                                            th:text="${genre.name}">Chiến tranh
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>
@@ -86,11 +86,10 @@
                                             <label>Đạo diễn</label>
                                             <div class="select2-purple">
                                                 <select class="select2 form-control" multiple="multiple" id="director">
-                                                    <option>Đạo diễn 1</option>
-                                                    <option>Đạo diễn 2</option>
-                                                    <option>Đạo diễn 3</option>
-                                                    <option>Đạo diễn 4</option>
-                                                    <option>Đạo diễn 5</option>
+                                                    <option th:each="director : ${directors}"
+                                                            th:value="${director.id}"
+                                                            th:text="${director.name}">Chiến tranh
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>
@@ -99,11 +98,10 @@
                                             <label>Diễn viên</label>
                                             <div class="select2-purple">
                                                 <select class="select2 form-control" multiple="multiple" id="actor">
-                                                    <option>Diễn viên 1</option>
-                                                    <option>Diễn viên 2</option>
-                                                    <option>Diễn viên 3</option>
-                                                    <option>Diễn viên 4</option>
-                                                    <option>Diễn viên 5</option>
+                                                    <option th:each="actor : ${actors}"
+                                                            th:value="${actor.id}"
+                                                            th:text="${actor.name}">Chiến tranh
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>
@@ -142,14 +140,9 @@
                                         <div class="form-group">
                                             <label>Quốc gia</label>
                                             <select id="country" class="form-control">
-                                                <option value="PHIM_LE">
-                                                    Việt Nam
-                                                </option>
-                                                <option value="PHIM_BO">
-                                                    Trung quốc
-                                                </option>
-                                                <option value="PHIM_CHIEU_RAP">
-                                                    Nhật bản
+                                                <option th:each="country : ${countries}"
+                                                        th:value="${country.id}"
+                                                        th:text="${country.name}">Chiến tranh
                                                 </option>
                                             </select>
                                         </div>

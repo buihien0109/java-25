@@ -38,7 +38,12 @@ public class MovieController {
     }
 
     @GetMapping("/{id}/detail")
-    public String getDetailPage(@PathVariable Integer id) {
+    public String getDetailPage(@PathVariable Integer id, Model model) {
+        model.addAttribute("movie", movieService.getMovieById(id));
+        model.addAttribute("countries", countryRepository.findAll());
+        model.addAttribute("genres", genreRepository.findAll());
+        model.addAttribute("actors", actorRepository.findAll());
+        model.addAttribute("directors", directorRepository.findAll());
         return "admin/movie/detail";
     }
 }
