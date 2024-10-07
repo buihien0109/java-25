@@ -11,9 +11,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +25,7 @@ public class MovieService {
     private final GenreRepository genreRepository;
     private final ActorRepository actorRepository;
     private final DirectorRepository directorRepository;
+    private final CloudinaryService cloudinaryService;
 
     public Page<Movie> getMoviesByType(MovieType type, Boolean status, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by("createdAt").descending());
@@ -69,5 +72,21 @@ public class MovieService {
         movie.setUpdatedAt(LocalDateTime.now());
         movie.setPublishedAt(request.getStatus() ? LocalDateTime.now() : null);
         return movieRepository.save(movie);
+    }
+
+    public String uploadPoster(Integer id, MultipartFile file) {
+        Movie movie = movieRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Movie not found"));
+
+        try {
+            Map map = cloudinaryService.uploadFile(file, "java-25-movie");
+            System.out.println(map);
+            String path = map.get("url").toString();
+            movie.setPoster(path);
+            movieRepository.save(movie);
+            return path;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to upload poster");
+        }
     }
 }
