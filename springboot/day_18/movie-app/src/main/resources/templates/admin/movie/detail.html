@@ -206,22 +206,38 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Tập full</td>
-                                        <td class="videoUrl" style="word-break: break-all">https://videos.pexels.com/video-files/3209828/3209828-hd_1280_720_25fps.mp4</td>
-                                        <td class="duration">90</td>
-                                        <td>Công khai</td>
+                                    <tr th:each="episode : ${episodes}">
+                                        <td th:text="${episode.displayOrder}"></td>
+                                        <td th:text="${episode.name}"></td>
+                                        <td
+                                                th:text="${episode.videoUrl != null ? episode.videoUrl : 'Chưa cập nhật'}"
+                                                class="videoUrl"
+                                                style="word-break: break-all"
+                                        ></td>
+                                        <td th:text="${episode.duration != null ? episode.duration : 'Chưa cập nhật'}"
+                                            class="duration"></td>
+                                        <td th:text="${episode.status ? 'Công khai' : 'Ẩn'}"></td>
                                         <td>
-                                            <label class="btn btn-warning btn-sm mb-0" for="input-video-206">
+                                            <label class="btn btn-warning btn-sm mb-0"
+                                                   th:for="|input-video-${episode.id}|">
                                                 <i class="fas fa-upload"></i>
                                             </label>
-                                            <input type="file" id="input-video-206" class="d-none" onchange="uploadEpisodeVideo(206, event)">
-                                            <button class="btn btn-primary btn-sm" onclick="showEpisodePreview(206)">
+                                            <input
+                                                    type="file"
+                                                    th:id="|input-video-${episode.id}|"
+                                                    class="d-none"
+                                                    th:onchange="|uploadEpisodeVideo(${episode.id}, event)|"
+                                            >
+                                            <button class="btn btn-primary btn-sm"
+                                                    th:onclick="|showEpisodePreview(${episode.id})|">
                                                 <i class="fas fa-play"></i>
                                             </button>
-                                            <button class="btn btn-success btn-sm" onclick="openModalUpdateEpisode(206)"><i class="fas fa-pencil-alt"></i></button>
-                                            <button class="btn btn-danger btn-sm" onclick="deleteEpisode(206)"><i class="fas fa-trash-alt"></i></button>
+                                            <button class="btn btn-success btn-sm"
+                                                    th:onclick="|openModalUpdateEpisode(${episode.id})|"><i
+                                                    class="fas fa-pencil-alt"></i></button>
+                                            <button class="btn btn-danger btn-sm"
+                                                    th:onclick="|deleteEpisode(${episode.id})|"><i
+                                                    class="fas fa-trash-alt"></i></button>
                                         </td>
                                     </tr>
                                     </tbody>

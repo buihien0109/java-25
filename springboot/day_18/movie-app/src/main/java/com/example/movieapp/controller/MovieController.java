@@ -4,6 +4,7 @@ import com.example.movieapp.repository.ActorRepository;
 import com.example.movieapp.repository.CountryRepository;
 import com.example.movieapp.repository.DirectorRepository;
 import com.example.movieapp.repository.GenreRepository;
+import com.example.movieapp.service.EpisodeService;
 import com.example.movieapp.service.MovieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ public class MovieController {
     private final GenreRepository genreRepository;
     private final ActorRepository actorRepository;
     private final DirectorRepository directorRepository;
+    private final EpisodeService episodeService;
 
     @GetMapping
     public String getIndexPage(Model model) {
@@ -44,6 +46,9 @@ public class MovieController {
         model.addAttribute("genres", genreRepository.findAll());
         model.addAttribute("actors", actorRepository.findAll());
         model.addAttribute("directors", directorRepository.findAll());
+
+        // Láy danh sách tập phim của phim sap xep theo displayOrder tăng dần
+        model.addAttribute("episodes", episodeService.getEpisodeListOfMovieByAdmin(id));
         return "admin/movie/detail";
     }
 }
