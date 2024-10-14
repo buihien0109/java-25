@@ -436,6 +436,27 @@
                 alert(error.response.data.message);
             }
         });
+
+        // Update poster ---------------------------------------------
+        const inputPosterEl = document.getElementById('input-poster');
+        const posterEl = document.getElementById('thumbnail');
+        inputPosterEl.addEventListener("change", async (e) => {
+            try {
+                const file = e.target.files[0];
+                const formData = new FormData();
+                formData.append('file', file);
+                console.log(file);
+
+                const res = await axios.post(`/api/admin/movies/${movie.id}/upload-poster`, formData);
+                console.log(res);
+                posterEl.src = res.data.url;
+                alert('Upload ảnh thành công');
+            } catch (error) {
+                console.log(error)
+                alert(error.response.data.message);
+            }
+        })
+
     </script>
 </th:block>
 </body>
