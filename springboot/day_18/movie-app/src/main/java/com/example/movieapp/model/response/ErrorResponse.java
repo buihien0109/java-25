@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ErrorResponse {
     HttpStatus status;
-    String message;
+    Object message;
 
     // path, actor, time
 }
