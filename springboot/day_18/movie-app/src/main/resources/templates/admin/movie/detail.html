@@ -248,57 +248,57 @@
                 </div>
             </div>
         </section>
-    </div>
 
-    <div class="modal fade" id="modalPreview">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Video Preview</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <video width="100%" controls="">
-                        <source src="" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
+        <div class="modal fade" id="modalPreview">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Video Preview</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <video width="100%" controls="">
+                            <source src="" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="modal fade" id="modalEpisode">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Default Modal</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="form-episode" novalidate="novalidate">
-                        <div class="form-group">
-                            <label>Tên tập phim</label>
-                            <input type="text" class="form-control" id="episodeName" name="name">
-                        </div>
-                        <div class="form-group">
-                            <label>Tập số bao nhiêu</label>
-                            <input type="text" class="form-control" id="episodeDisplayOrder" name="displayOrder">
-                        </div>
-                        <div class="form-group">
-                            <label>Trạng thái</label>
-                            <select class="form-control" id="episodeStatus" name="status">
-                                <option value="false">Ẩn</option>
-                                <option value="true">Công khai</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Xác nhận</button>
-                        </div>
-                    </form>
+    
+        <div class="modal fade" id="modalEpisode">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Default Modal</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="form-episode" novalidate="novalidate">
+                            <div class="form-group">
+                                <label>Tên tập phim</label>
+                                <input type="text" class="form-control" id="episodeName" name="name">
+                            </div>
+                            <div class="form-group">
+                                <label>Tập số bao nhiêu</label>
+                                <input type="text" class="form-control" id="episodeDisplayOrder" name="displayOrder">
+                            </div>
+                            <div class="form-group">
+                                <label>Trạng thái</label>
+                                <select class="form-control" id="episodeStatus" name="status">
+                                    <option value="false">Ẩn</option>
+                                    <option value="true">Công khai</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Xác nhận</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -457,6 +457,10 @@
             }
         })
 
+        const openModalCreateEpisode = () => {
+            console.log("open modal");
+            $('#modalEpisode').modal('show');
+        }
     </script>
 </th:block>
 </body>
