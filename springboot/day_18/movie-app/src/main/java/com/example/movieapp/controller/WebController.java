@@ -2,10 +2,8 @@ package com.example.movieapp.controller;
 
 import com.example.movieapp.entity.*;
 import com.example.movieapp.model.enums.MovieType;
-import com.example.movieapp.service.BlogService;
-import com.example.movieapp.service.EpisodeService;
-import com.example.movieapp.service.MovieService;
-import com.example.movieapp.service.ReviewService;
+import com.example.movieapp.model.response.TokenConfirmMessageResponse;
+import com.example.movieapp.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,6 +22,7 @@ public class WebController {
     private final BlogService blogService;
     private final ReviewService reviewService;
     private final EpisodeService episodeService;
+    private final AuthService authService;
 
     @GetMapping("/")
     public String getHomePage(Model model) {
@@ -132,5 +131,13 @@ public class WebController {
             return "redirect:/";
         }
         return "web/dang-ky";
+    }
+
+    // http://localhost:8081/xac-thuc-tai-khoan?token=09981021-4616-4e0c-85b9-4dc74022d3d7
+    @GetMapping("/xac-thuc-tai-khoan")
+    public String verifyAccountPage(@RequestParam String token, Model model) {
+        TokenConfirmMessageResponse response = authService.verifyAccount(token);
+        model.addAttribute("response", response);
+        return "web/xac-thuc-tai-khoan";
     }
 }
