@@ -124,4 +124,13 @@ public class WebController {
         }
         return "web/dang-nhap";
     }
+
+    @GetMapping("/dang-ky")
+    public String registerPage(HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("currentUser");
+        if (user != null) {
+            return "redirect:/";
+        }
+        return "web/dang-ky";
+    }
 }

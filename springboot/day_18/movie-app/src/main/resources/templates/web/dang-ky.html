@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Đăng nhập</title>
+    <title>Đăng ký</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
           integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
@@ -70,8 +70,12 @@
 <section class="py-4">
     <div class="container">
         <div class="d-flex justify-content-center align-items-center flex-column">
-            <h3 class="mb-3">Đăng nhập</h3>
-            <form id="form-login" class="p-4 bg-body-tertiary">
+            <h3 class="mb-3">Đăng ký</h3>
+            <form id="form-register" class="p-4 bg-body-tertiary">
+                <div class="mb-3 form-group">
+                    <label for="email" class="form-label">Tên</label>
+                    <input type="text" class="form-control" id="name" name="name"/>
+                </div>
                 <div class="mb-3 form-group">
                     <label for="email" class="form-label">Email</label>
                     <input type="text" class="form-control" id="email" name="email"/>
@@ -80,12 +84,11 @@
                     <label for="password" class="form-label">Password</label>
                     <input type="password" class="form-control" id="password" name="password"/>
                 </div>
-                <div class="mb-3 d-flex justify-content-between align-items-center">
-                    <button type="submit" class="btn btn-primary" id="btn-login">Đăng nhập</button>
-                    <a href="/quen-mat-khau" class="text-primary">Quên mật khẩu</a>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary" id="btn-register">Đăng ký</button>
                 </div>
                 <div class="mb-3">
-                    <a href="/dang-ky" class="text-primary">Đăng ký tài khoản</a>
+                    <a href="/dang-ky" class="text-primary">Quay lại đăng nhập</a>
                 </div>
             </form>
         </div>
@@ -157,23 +160,26 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script th:src="@{/web-assets/js/main.js}"></script>
 <script>
-    const formLoginEl = document.getElementById('form-login');
+    const formLoginEl = document.getElementById('form-register');
+    const nameEl = document.getElementById('name');
     const emailEl = document.getElementById('email');
     const passwordEl = document.getElementById('password');
     formLoginEl.addEventListener('submit', async function (e) {
         e.preventDefault();
+        const name = nameEl.value;
         const email = emailEl.value;
         const password = passwordEl.value;
         const data = {
+            name,
             email,
             password
         };
         try {
-            const response = await axios.post('/api/auth/login', data);
+            const response = await axios.post('/api/auth/register', data);
             if (response.status === 200) {
-                toastr.success('Đăng nhập thành công');
+                toastr.success('Đăng ký thành công');
                 setTimeout(() => {
-                    window.location.href = '/';
+                    window.location.href = '/dang-nhap';
                 }, 1000);
             }
         } catch (error) {
