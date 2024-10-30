@@ -873,6 +873,6 @@ strong {
     color: #EDBB0E;
 }
 
-#form-login, #form-register {
+#form-login, #form-register, #form-forgot-password {
     width: 400px;
 }

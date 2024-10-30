@@ -138,6 +138,16 @@ public class WebController {
     public String verifyAccountPage(@RequestParam String token, Model model) {
         TokenConfirmMessageResponse response = authService.verifyAccount(token);
         model.addAttribute("response", response);
+        model.addAttribute("token", token);
         return "web/xac-thuc-tai-khoan";
+    }
+
+    @GetMapping("/quen-mat-khau")
+    public String forgotPasswordPage(HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("currentUser");
+        if (user != null) {
+            return "redirect:/";
+        }
+        return "web/quen-mat-khau";
     }
 }
