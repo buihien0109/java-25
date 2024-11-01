@@ -1,15 +1,17 @@
 package com.example.demospringsecurity.security;
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -18,22 +20,35 @@ import org.springframework.security.web.SecurityFilterChain;
         securedEnabled = true,
         jsr250Enabled = true
 )
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class SecurityConfig {
+    final UserDetailsService userDetailsService;
+    final PasswordEncoder passwordEncoder;
+
+//    @Bean
+//    public UserDetailsService users() {
+//        // The builder will ensure the passwords are encoded before saving in memory
+//        User.UserBuilder users = User.withDefaultPasswordEncoder();
+//        UserDetails user = users
+//                .username("user")
+//                .password("123")
+//                .roles("USER")
+//                .build();
+//        UserDetails admin = users
+//                .username("admin")
+//                .password("123")
+//                .roles("USER", "ADMIN")
+//                .build();
+//        return new InMemoryUserDetailsManager(user, admin);
+//    }
+
     @Bean
-    public UserDetailsService users() {
-        // The builder will ensure the passwords are encoded before saving in memory
-        User.UserBuilder users = User.withDefaultPasswordEncoder();
-        UserDetails user = users
-                .username("user")
-                .password("123")
-                .roles("USER")
-                .build();
-        UserDetails admin = users
-                .username("admin")
-                .password("123")
-                .roles("USER", "ADMIN")
-                .build();
-        return new InMemoryUserDetailsManager(user, admin);
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(passwordEncoder);
+        provider.setUserDetailsService(userDetailsService);
+        return provider;
     }
 
     @Bean
@@ -63,6 +78,8 @@ public class SecurityConfig {
         http.logout(logout -> {
             logout.logoutSuccessUrl("/");
         });
+
+        http.authenticationProvider(authenticationProvider());
         return http.build();
     }
 }
