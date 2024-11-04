@@ -1,6 +1,6 @@
 package com.example.demospringsecurity.security;
 
-import com.example.demospringsecurity.model.User;
+import com.example.demospringsecurity.entity.User;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,7 +20,7 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
                 .toList();
     }
 

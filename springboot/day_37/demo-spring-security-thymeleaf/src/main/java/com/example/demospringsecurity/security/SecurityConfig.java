@@ -5,8 +5,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -52,8 +55,15 @@ public class SecurityConfig {
     }
 
     @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         String[] PUBLIC_PATH = {"/aa", "/bb", "/css/**", "/js/**", "/images/**"};
+
+        http.csrf(c -> c.disable()); // Bo qua CSRF
         http.authorizeHttpRequests(authorizeRequests -> {
 //            authorizeRequests.requestMatchers("/", "/a", "/b").permitAll();
 //            authorizeRequests.requestMatchers(PUBLIC_PATH).permitAll();
@@ -67,13 +77,13 @@ public class SecurityConfig {
             authorizeRequests.anyRequest().permitAll();
         });
 
-        http.formLogin(formLogin -> {
-            formLogin.defaultSuccessUrl("/", true);
-            formLogin.loginPage("/login");
-            formLogin.loginProcessingUrl("/login-process");
-            formLogin.usernameParameter("email");
-            formLogin.passwordParameter("credential");
-        });
+//        http.formLogin(formLogin -> {
+//            formLogin.defaultSuccessUrl("/", true);
+//            formLogin.loginPage("/login");
+//            formLogin.loginProcessingUrl("/login-process");
+//            formLogin.usernameParameter("email");
+//            formLogin.passwordParameter("credential");
+//        });
 
         http.logout(logout -> {
             logout.logoutSuccessUrl("/");

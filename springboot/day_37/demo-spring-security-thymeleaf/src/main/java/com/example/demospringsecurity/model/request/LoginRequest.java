@@ -1,20 +1,14 @@
-package com.example.demospringsecurity.model;
+package com.example.demospringsecurity.model.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class User {
-    Integer id;
-    String name;
+public class LoginRequest {
     String email;
     String password;
-    List<String> roles; // USER, ADMIN
-    Boolean enabled;
 }
